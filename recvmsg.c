@@ -13,7 +13,7 @@ int main (int argc, char **argv) {
  char msgbuf[MSGSIZ+1];
 
  /* fifo가 이미 존재하지 않으면, 생성한다 */
- if (mkfifo(fifo, 0666) == -1)
+ if (mkfifo(fifo, 060001) == -1)
  {
  	if (errno != EEXIST)
  		printf("receiver: mkfifo\n");

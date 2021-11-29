@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
+
 #define MSGSIZ		63
 
 char *fifo = "fifo";
