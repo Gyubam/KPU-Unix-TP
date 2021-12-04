@@ -5,9 +5,16 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <pthread.h>
 
 #define MSGSIZ		63
+
+pthread_t th[5];
+pthread_mutex_t th_m[5];
+
+
 char *fifo = "fifo";
+char *fifo2 = "fifo2";
 int seat_availability[9][9] = { 0, };
 int seat[9][9];
 char rows[9] = { 'A','B','C','D','E','F','G','H','I' };
@@ -15,22 +22,44 @@ void seat_print();
 
 
 int main (int argc, char **argv) {
- int fd, j, nwrite;
+ int fd, j, nwrite, nwrite2;
+ int fd2;
  char msgbuf[MSGSIZ+1];
  char* select;
+ char* select2;
 
 
- while(1) {
+ 
  	printf("좌석 확인 : 1 \n");
 	//scanf("%c",argv);
-	
-	
-	 if ((fd = open(fifo, O_WRONLY | O_NONBLOCK)) < 0)
+
+	if ((fd = open(fifo, O_WRONLY | O_NONBLOCK)) < 0)
         printf("fifo open failed\n");
+
+	 if (mkfifo(fifo2, 60012) == -1)
+ 	{
+        	if (errno != EEXIST)
+                	printf("receiver: mkfifo2\n");
+ 	}
+
+
+while(1){
+	
+	if (read(fd, msgbuf, MSGSIZ+1) <0)
+                printf("message read failed\n");
+	else{
+		 printf ("message received:%s\n", msgbuf);
+	}
+	
+	select="send from clnt";
+	nwrite = write(fd,select,MSGSIZ+1);
+
+	
+	sleep(2);
+
 	
 
-	select="lakelknf";
-	nwrite = write(fd,select,MSGSIZ+1);
+}
 	/*
 	// 메시지를 보낸다
 	 for ( j = 1; j < argc; j++)
@@ -49,7 +78,7 @@ int main (int argc, char **argv) {
 	}
  	*/
 
- 	  }
+ 	
 }
 void seat_print() {
         printf(" ");
