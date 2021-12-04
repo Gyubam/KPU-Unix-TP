@@ -1,4 +1,4 @@
 # KPU-Unix-TP
 
-# mqserv.c 
-# mqclnt.c
+### mqserv.c : message passing server
+### mqclnt.c : message passing client
